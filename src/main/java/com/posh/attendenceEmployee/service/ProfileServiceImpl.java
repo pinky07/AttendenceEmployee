@@ -48,7 +48,13 @@ public class ProfileServiceImpl implements ProfileService{
 		// TODO Auto-generated method stub
 		return profileRepository.findAll();
 	}
-	
-	
+
+
+
+	@Override
+	public Long deleteById(int id) {
+		// TODO Auto-generated method stub
+		return profileRepository.deleteById(id);
+	}
 
 }

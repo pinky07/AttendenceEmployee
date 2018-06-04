@@ -1,8 +1,10 @@
 package com.posh.attendenceEmployee.controller;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -13,12 +15,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.posh.attendenceEmployee.model.Attendence;
 import com.posh.attendenceEmployee.model.Employee;
 import com.posh.attendenceEmployee.model.Profile;
@@ -61,17 +63,16 @@ public class LoginController {
 	public ModelAndView registration(Model model){
 		ModelAndView modelAndView = new ModelAndView();
 
-		modelAndView.addObject("profiles",profileService.findAll() );
+		modelAndView.addObject("profilesList",profileService.findAll() );
 		model.addAttribute("profile",new Profile());
 		model.addAttribute("employee",new Employee());
-		
-		
+		model.addAttribute("profilesList",profileService.findAll());
 		modelAndView.setViewName("registration");
 		return modelAndView;
 	}
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public ModelAndView createNewUser(@Valid  @ModelAttribute("employee") Employee employee,Model model, BindingResult bindingResult) {
+	public ModelAndView createNewUser(@Valid  @ModelAttribute("employee") Employee employee,@ModelAttribute("profile") Profile profile, BindingResult bindingResult) {
 		ModelAndView modelAndView = new ModelAndView();
 		Employee userExists = empService.findUserByUserName(employee.getUserName());
 		if (userExists != null) {
@@ -104,13 +105,10 @@ public class LoginController {
 			}if((atten1.getStartTime()!= null) && (atten1.getEndTime()==null)){
 				atten1.setEndTime(date);
 			}
-			System.out.println("userName="+userName);
-			Attendence atten = new Attendence();
-//			atten.setStartTime(attendece.getStartTime());
+			Attendence atten = new Attendence();	
 			atten.setEmployee(emp);
-//			attendenceService.saveAttendence(attendece);
 			modelAndView.addObject("successMessage","Attendece has been  successfully save");
-			//modelAndView.setViewName("attendence");
+			
 		}
 		return modelAndView;
 	}
@@ -124,4 +122,26 @@ public class LoginController {
 		modelAndView.setViewName("admin/home");
 		return modelAndView;
 	}
+
+	@RequestMapping(value="/list", method=RequestMethod.GET)
+	 public ModelAndView list(){
+		 ModelAndView model = new ModelAndView("list");
+		List<Employee>employeeList = empService.findAll();
+		  model.addObject("employeeList", employeeList); 
+		  	return model;
+		}
+
+	 @RequestMapping(value="/update/{id}", method=RequestMethod.GET)
+	 public ModelAndView update(@PathVariable("id") int id){
+	  ModelAndView model = new ModelAndView("registration");
+	  Employee employee = empService.findById(id);
+	  model.addObject("employee", employee);
+	  return model;
+	 }
+	 
+	 @RequestMapping(value="/delete/{id}", method=RequestMethod.GET)
+	 public ModelAndView delete(@PathVariable("id") int id){
+		 empService.deleteById(id);
+	  return new ModelAndView("redirect:/list");
+	 }
 }

@@ -1,19 +1,12 @@
 package com.posh.attendenceEmployee.model;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 
 @Entity
@@ -24,22 +17,13 @@ public class Profile {
 	@Id
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	 private int id;
-	 	 
+	 
+	@NotEmpty(message = "*Please select status")
 	 @Column(name = "status")
 	 private char status;
 	 
-	 @OneToMany(mappedBy = "profile", fetch = FetchType.LAZY)
-	  private Set<Employee> employeeSet;
-
-	public Set<Employee> getEmployeeSet() {
-		return employeeSet;
-	}
-
-	public void setEmployeeSet(Set<Employee> employeeSet) {
-		this.employeeSet = employeeSet;
-	}
-
-	@Column(name = "name")
+	 @NotEmpty(message = "*Please provide an profile name")
+	 @Column(name = "name")
 	 private String name;
 
 	@Override
@@ -49,6 +33,37 @@ public class Profile {
 
 	public int getId() {
 		return id;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + status;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Profile other = (Profile) obj;
+		if (id != other.id)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (status != other.status)
+			return false;
+		return true;
 	}
 
 	public void setId(int id) {

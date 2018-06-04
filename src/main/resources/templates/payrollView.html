@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Registration Form</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/registration.css}" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<form th:action="@{/}" method="get">
+		<button class="btn btn-md btn-warning btn-block" type="Submit">Go
+			To Login Page</button>
+	</form>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+			
+					<h2 id="errors" th:if="${(id != null)}">Update Payroll</h2>
+					<h2 id="errors" th:if="${(id == null)}">Add Payroll</h2>
+					
+				<form autocomplete="off" action="#" th:action="@{/payroll/add}"
+					th:object="${payroll}" method="post" class="form-horizontal"
+					role="form">
+					<h2>Payroll System </h2>
+					
+					<div class="form-group">
+					
+					</div>
+					
+					<div class="form-group">
+					
+					 <span class="msg-green" th:if="${(id != null)}">
+					 <select class="form-control" th:field="*{employeeid}" th:disabled="disabled">
+							<option value="0">Employee</option>
+							<option th:each="payrolls : ${employee}"
+							th:value="${payrolls.id}"
+							 th:selected="${payrolls.id}" 	 
+							 th:text="${payrolls.name}"></option>
+						</select>
+					 </span>
+					 
+					 <span class="msg-green" th:if="${(id == null)}">
+						<select class="form-control" th:field="*{employeeid}">
+							<option value="0">Employee</option>
+							<option th:each="payrolls : ${employee}"
+							th:value="${payrolls.id}"
+							 th:selected="${payrolls.id}"
+							 th:text="${payrolls.name}"></option></select>
+					<a th:href="@{'/registration'}">Add Employee</a>
+								</span>
+								
+						
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-9">
+							<label th:if="${#fields.hasErrors('salary')}"
+								th:errors="*{salary}" class="validation-message"></label> <input
+								type="text" th:field="*{salary}" placeholder="salary"
+								class="form-control" />
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<div class="col-sm-9">
+							<label th:if="${#fields.hasErrors('dateOfJoin')}" th:errors="*{dateOfJoin}"
+								class="validation-message"></label> <input type="text"
+								th:field="*{dateOfJoin}" placeholder="dateOfJoin" class="form-control" />
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-9">
+							<button type="submit" class="btn btn-primary btn-block">Payroll
+								Enter</button>
+						</div>
+					</div>
+
+					<span th:utext="${successMessage}"></span>
+
+		<input type="hidden" th:field="*{id}" class="form-control" />
+				</form>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
