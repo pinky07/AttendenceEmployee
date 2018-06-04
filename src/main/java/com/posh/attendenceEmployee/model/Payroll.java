@@ -26,6 +26,7 @@ public class Payroll {
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 	 private int id;
 	 
+	@NotEmpty(message = "*Please provide an Employee ID")
 	 @Column(name = "employee_id")
 	 private int employeeid;
 
