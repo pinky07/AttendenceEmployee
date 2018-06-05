@@ -13,6 +13,7 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+
 	<form th:action="@{/}" method="get">
 		<button class="btn btn-md btn-warning btn-block" type="Submit">Go
 			To Login Page</button>
@@ -22,10 +23,14 @@
 		<div class="row">
 			<div class="col-md-6 col-md-offset-3">
 
-				<form autocomplete="off" action="#" th:action="@{/registration}"
-					th:object="${employee}" method="post" class="form-horizontal"
+				<form autocomplete="off" action="#" th:action="@{/profile/add}"
+					th:object="${profile}" method="post" class="form-horizontal"
 					role="form">
-					<h2>Registration Form</h2>
+
+					<h2 id="errors" th:if="${(id != null)}">Update Profile</h2>
+					<h2 id="errors" th:if="${(id == null)}">Add Profile</h2>
+
+
 					<div class="form-group">
 						<div class="col-sm-9">
 							<label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
@@ -36,42 +41,24 @@
 
 					<div class="form-group">
 						<div class="col-sm-9">
-							<label th:if="${#fields.hasErrors('userName')}"
-								th:errors="*{userName}" class="validation-message"></label> <input
-								type="text" th:field="*{userName}" placeholder="user Name"
-								class="form-control" />
+							<label th:if="${#fields.hasErrors('status')}"
+								th:errors="*{status}" class="validation-message"></label> <input
+								type="radio" value="1" th:field="*{status}" placeholder="status"
+								class="form-control" />Active <input type="radio" value="0"
+								th:field="*{status}" placeholder="status" class="form-control" />Deactive
 						</div>
 					</div>
-					<div class="form-group">
-						<select class="form-control" th:field="*{profileID}">
-							<option value="0">ALL</option>
-							<option th:each="profiles : ${profilesList}"
-								th:value="${profiles.id}" th:selected="${profiles.name}"
-								th:text="${profiles.name}"></option>
-						</select>
-					</div>
-
-
 					<div class="form-group">
 						<div class="col-sm-9">
-							<input type="password" th:field="*{password}"
-								placeholder="Password" class="form-control" /> <label
-								th:if="${#fields.hasErrors('password')}" th:errors="*{password}"
-								class="validation-message"></label>
+							<button type="submit" class="btn btn-primary btn-block">Add
+								Profile</button>
 						</div>
+						<spanth:utext="${successMessage}"></span>
 					</div>
-
-					<div class="form-group">
-						<div class="col-sm-9">
-							<button type="submit" class="btn btn-primary btn-block">Register
-								User</button>
-						</div>
-					</div>
-
-					<span th:utext="${successMessage}"></span>
-
-
+					<input type="hidden" th:field="*{id}" class="form-control" />
+						 
 				</form>
+				
 			</div>
 		</div>
 	</div>

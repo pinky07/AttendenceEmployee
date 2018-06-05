@@ -23,8 +23,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Value("${spring.queries.users-query}")
 	private String usersQuery;
-//	@Value("${spring.queries.roles-query}")
-//	private String rolesQuery;
+
 	@Autowired
 	private DataSource dataSource;
 	
@@ -32,31 +31,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
 		auth.jdbcAuthentication()
 		.usersByUsernameQuery(usersQuery)
-//		.authoritiesByUsernameQuery(rolesQuery)
+
 		.dataSource(dataSource)
 		.passwordEncoder(bCryptPasswordEncoder);
 	}
-//	@Override
-//	protected void configure(HttpSecurity http) throws Exception{
-//		http.authorizeRequests()
-//		.antMatchers("/").permitAll()
-//		.antMatchers("/login").permitAll()
-//		.antMatchers("/attendence").permitAll()
-////		.antMatchers("").permitAll()
-////		.antMatchers("/registration").permitAll()
-//		.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
-//		.authenticated().and().csrf().disable().formLogin()
-//		.loginPage("/login").failureUrl("/login?error=true")
-//		.defaultSuccessUrl("/attendence")
-//		.usernameParameter("userName")
-//		.passwordParameter("password")
-//		.and().logout()
-//		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-////		.logoutSuccessUrl("/")
-//		.logoutSuccessUrl("logout")
-//		.and().exceptionHandling()
-//		.accessDeniedPage("/access-denied");
-//		}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
@@ -65,13 +44,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/").permitAll()
 				.antMatchers("/login").permitAll()
 				.antMatchers("/registration").permitAll()
+				.antMatchers("/list").permitAll()
+				.antMatchers("/update/**").permitAll()
+				.antMatchers("/registration").permitAll()
+				.antMatchers("/profile/**").permitAll()
+				.antMatchers("/delete/**").permitAll()
+				.antMatchers("/registrationinsert").permitAll()
 				.antMatchers("/attendence").permitAll()
-				.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
-				.authenticated().and().csrf().disable().formLogin()
-				.loginPage("/login").failureUrl("/login?error=true")
-				.defaultSuccessUrl("/attendence")
-				.usernameParameter("userName")
-				.passwordParameter("password")
+				.antMatchers("/payroll/**").permitAll()
+//				.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
+//				.authenticated().and().csrf().disable().formLogin()
+//				.loginPage("/login").failureUrl("/login?error=true")
+				//.defaultSuccessUrl("/attendence")
+				//passwordParameter("password")
 				.and().logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessUrl("/").and().exceptionHandling()

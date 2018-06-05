@@ -55,10 +55,11 @@ public class Employee {
 	 
 
 	
-	 @ManyToOne(fetch = FetchType.LAZY)
+	 //@ManyToOne(fetch = FetchType.LAZY)
 	// @JoinTable(name = "employee_profile",joinColumns = @JoinColumn(name = "employee_id"),inverseJoinColumns = @JoinColumn(name = "profile_id"))
-	 @JoinColumn(name="profile_id")
-	 private Profile profile;
+	 //@JoinColumn(name="profile_id")
+	 @Column(name = "profile_id")
+	 private int profileID;
 	 
 
 	 @Temporal(TemporalType.TIMESTAMP)
@@ -69,9 +70,105 @@ public class Employee {
 	 @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
 	 private Set<Attendence> attendence = new HashSet<Attendence>();
 	 
-public int getId() {
+
+
+	
+
+
+
+
+
+
+	
+
+
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((attendence == null) ? 0 : attendence.hashCode());
+		result = prime * result + ((createdate == null) ? 0 : createdate.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
+		result = prime * result + profileID;
+		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
+		return result;
+	}
+
+
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Employee other = (Employee) obj;
+		if (attendence == null) {
+			if (other.attendence != null)
+				return false;
+		} else if (!attendence.equals(other.attendence))
+			return false;
+		if (createdate == null) {
+			if (other.createdate != null)
+				return false;
+		} else if (!createdate.equals(other.createdate))
+			return false;
+		if (id != other.id)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (profileID != other.profileID)
+			return false;
+		if (userName == null) {
+			if (other.userName != null)
+				return false;
+		} else if (!userName.equals(other.userName))
+			return false;
+		return true;
+	}
+
+
+
+
+
+	public int getProfileID() {
+		return profileID;
+	}
+
+
+
+
+
+	public void setProfileID(int profileID) {
+		this.profileID = profileID;
+	}
+
+
+
+
+
+	public int getId() {
 		return id;
 	}
+
+
+
 
 
 	public void setId(int id) {
@@ -79,23 +176,7 @@ public int getId() {
 	}
 
 
-	
 
-	@Override
-	public String toString() {
-		return "Employee [id=" + id + ", userName=" + userName + ", password=" + password + ", name=" + name
-				+ ", profile=" + profile + ", createdate=" + createdate + ", attendence=" + attendence + "]";
-	}
-
-
-	public Profile getProfile() {
-		return profile;
-	}
-
-
-	public void setProfile(Profile profile) {
-		this.profile = profile;
-	}
 
 
 	public String getUserName() {
@@ -103,9 +184,17 @@ public int getId() {
 	}
 
 
+
+
+
+
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+
+
+
 
 
 	public String getPassword() {
@@ -113,14 +202,23 @@ public int getId() {
 	}
 
 
+
+
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
 
+
+
+
 	public String getName() {
 		return name;
 	}
+
+
+
 
 
 	public void setName(String name) {
@@ -131,9 +229,26 @@ public int getId() {
 
 
 
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
 	public Date getCreatedate() {
 		return createdate;
 	}
+
+
+
 
 
 	public void setCreatedate(Date createdate) {
@@ -141,14 +256,31 @@ public int getId() {
 	}
 
 
-public Set<Attendence> getAttendence() {
+
+
+
+	public Set<Attendence> getAttendence() {
 		return attendence;
 	}
+
+
+
 
 
 	public void setAttendence(Set<Attendence> attendence) {
 		this.attendence = attendence;
 	}
+
+
+
+
+
+	@Override
+	public String toString() {
+		return "Employee [id=" + id + ", userName=" + userName + ", password=" + password + ", name=" + name
+				+ ", profile=" + profileID + ", createdate=" + createdate + ", attendence=" + attendence + "]";
+	}
+
 
 
 
